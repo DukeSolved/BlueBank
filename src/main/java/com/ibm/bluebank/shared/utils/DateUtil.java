@@ -18,4 +18,10 @@ public class DateUtil {
         }
         return data;
     }
+
+    public static String toString(Date toString, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String parsed = sdf.format(toString);
+        return parsed;
+    }
 }

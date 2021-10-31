@@ -1,5 +1,7 @@
 package com.ibm.bluebank.extrato.controller;
 
+import com.ibm.bluebank.cliente.model.Cliente;
+import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.extrato.dto.ExtratoDto;
 import com.ibm.bluebank.extrato.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("extratos")
@@ -23,6 +27,9 @@ public class ExtratoRestController {
 
     @Autowired
     private DataConverter dateConverter;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping
     public ResponseEntity<Response> extrato(@RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
@@ -36,8 +43,9 @@ public class ExtratoRestController {
             response.setSucesso(false);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
-        ExtratoDto extrato = extratoService.getExtrato(dataInicio, dataFim);
+        String token = ""; // o token do usuario será obetido pelo request;
+        Cliente cliente = clienteService.getClienteByToken(token);
+        ExtratoDto extrato = extratoService.getExtrato(cliente, dataInicio, dataFim);
         response.setSucesso(true);
         response.setData(extrato);
         return ResponseEntity.ok(response);

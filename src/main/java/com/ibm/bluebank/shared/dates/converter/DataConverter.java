@@ -23,4 +23,8 @@ public class DataConverter {
         return data;
     }
 
+    public String toString(Date date) {
+        return DateUtil.toString(date, DATE_FORMAT);
+    }
+
 }
