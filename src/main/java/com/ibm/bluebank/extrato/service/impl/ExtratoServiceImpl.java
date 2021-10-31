@@ -7,6 +7,7 @@ import com.ibm.bluebank.extrato.dto.ExtratoDto;
 import com.ibm.bluebank.extrato.dto.MovimentoDto;
 import com.ibm.bluebank.extrato.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
+import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,9 @@ public class ExtratoServiceImpl implements ExtratoService {
         extrato.setFim(dataConverter.toString(dataFim));
 
         List<MovimentoDto> movimento = Arrays.asList(
-                new MovimentoDto(new Date(), "Deposito", 50000.00),
-                new MovimentoDto(new Date(), "Saque", 50000.00),
-                new MovimentoDto(new Date(), "Tranferência", 500.01)
+                new MovimentoDto(EnumTipoMovimento.DEPOSITO, new Date(), 50000.00),
+                new MovimentoDto(EnumTipoMovimento.SAQUE, new Date(), 50000.00),
+                new MovimentoDto(EnumTipoMovimento.TRANSFERENCIA, new Date(), 500.01)
         );
         extrato.setMovimento(movimento);
         return extrato;

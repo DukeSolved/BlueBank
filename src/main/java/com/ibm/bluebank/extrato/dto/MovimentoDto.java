@@ -1,21 +1,30 @@
 package com.ibm.bluebank.extrato.dto;
 
-import java.math.BigDecimal;
+import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
+
 import java.util.Date;
 
 public class MovimentoDto {
 
+    private EnumTipoMovimento tipo;
     private Date data;
-    private String descricao;
     private Double valor;
 
     public MovimentoDto() {
     }
 
-    public MovimentoDto(Date data, String descricao, Double valor) {
+    public MovimentoDto(EnumTipoMovimento tipo, Date data, Double valor) {
         this.data = data;
-        this.descricao = descricao;
+        this.tipo = tipo;
         this.valor = valor;
+    }
+
+    public EnumTipoMovimento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(EnumTipoMovimento tipo) {
+        this.tipo = tipo;
     }
 
     public Date getData() {
@@ -24,14 +33,6 @@ public class MovimentoDto {
 
     public void setData(Date data) {
         this.data = data;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public Double getValor() {
