@@ -2,8 +2,7 @@ package com.ibm.bluebank.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
@@ -11,7 +10,7 @@ public class Response<T> {
     private boolean sucesso;
     private T data;
     private String mensagem;
-    private List<String> erros;
+    private Map<String, String> erros;
 
     public boolean isSucesso() {
         return sucesso;
@@ -37,18 +36,11 @@ public class Response<T> {
         this.mensagem = mensagem;
     }
 
-    public void addErro(String erro) {
-        if (erros == null) {
-            erros = new ArrayList<>();
-        }
-        this.erros.add(erro);
-    }
-
-    public List<String> getErros() {
+    public Map<String, String> getErros() {
         return erros;
     }
 
-    public void setErros(List<String> erros) {
+    public void setErros(Map<String, String> erros) {
         this.erros = erros;
     }
 }
