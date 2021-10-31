@@ -4,6 +4,7 @@ public class Response<T> {
 
     private boolean sucesso;
     private T data;
+    private String mensage;
 
     public boolean isSucesso() {
         return sucesso;
@@ -19,5 +20,13 @@ public class Response<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public String getMensage() {
+        return mensage;
+    }
+
+    public void setMensage(String mensage) {
+        this.mensage = mensage;
     }
 }
