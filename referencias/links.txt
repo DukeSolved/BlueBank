@@ -1,0 +1,2 @@
+documentação de códigos de erro http
+https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpStatus.html
