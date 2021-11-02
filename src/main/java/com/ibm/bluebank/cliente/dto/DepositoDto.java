@@ -2,17 +2,17 @@ package com.ibm.bluebank.cliente.dto;
 
 import com.ibm.bluebank.conta.dto.ContaDto;
 
-public class ClienteDto {
+public class DepositoDto {
 
-    private String nome;
-    private ContaDto conta = new ContaDto();
+    private Double valor;
+    private ContaDto conta;
 
-    public String getNome() {
-        return nome;
+    public Double getValor() {
+        return valor;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
 
     public ContaDto getConta() {

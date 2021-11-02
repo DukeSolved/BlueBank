@@ -31,7 +31,7 @@ public class ExtratoServiceImpl implements ExtratoService {
         ContaDto contaDto = new ContaDto();
         contaDto.setNumero("0000000001");
         contaDto.setSaldo(new BigDecimal(500000.00));
-        clienteDto.setContaDto(contaDto);
+        clienteDto.setConta(contaDto);
 
         extrato.setCliente(clienteDto);
 
