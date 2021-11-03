@@ -30,6 +30,9 @@ public class Conta {
     @Column(name = "SALDO", nullable = false)
     private Double saldo;
 
+    @Column(name = "LIMITE", nullable = false)
+    private Double limite;
+
     @Column(name = "CRIADO_EM", nullable = false)
     private Date criadoEm;
 
