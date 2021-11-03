@@ -28,10 +28,9 @@ public class ExtratoServiceImpl implements ExtratoService {
         ClienteDto clienteDto = new ClienteDto();
         clienteDto.setNome("Ezequiel Lorenzatti");
 
-        ContaDto contaDto = new ContaDto();
-        contaDto.setNumero("0000000001");
-        contaDto.setSaldo(new BigDecimal(500000.00));
-        clienteDto.setConta(contaDto);
+        clienteDto.setNumero(1l);
+        clienteDto.setAgencia(1l);
+        clienteDto.setSaldo(1000000.00);
 
         extrato.setCliente(clienteDto);
 
