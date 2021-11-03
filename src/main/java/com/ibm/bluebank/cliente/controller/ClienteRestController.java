@@ -1,5 +1,6 @@
 package com.ibm.bluebank.cliente.controller;
 
+import com.ibm.bluebank.cliente.converter.ClienteConverter;
 import com.ibm.bluebank.cliente.dto.ClienteDto;
 import com.ibm.bluebank.cliente.dto.DepositoDto;
 import com.ibm.bluebank.cliente.dto.SaqueDto;
@@ -28,6 +29,9 @@ public class ClienteRestController {
     private ClienteService clienteService;
 
     @Autowired
+    private ClienteConverter clienteConverter;
+
+    @Autowired
     private ClienteValidator clienteValidator;
 
     @Autowired
@@ -40,6 +44,10 @@ public class ClienteRestController {
     @PostMapping()
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
+        Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
+        cliente = clienteService.salvar(cliente);
+        ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
+        response.setData(clienteDto);
         return ResponseEntity.ok(response);
     }
 

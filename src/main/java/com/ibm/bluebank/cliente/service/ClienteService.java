@@ -5,4 +5,6 @@ import com.ibm.bluebank.cliente.model.Cliente;
 public interface ClienteService {
 
     Cliente getClienteByToken(String token);
+
+    Cliente salvar(Cliente cliente);
 }
