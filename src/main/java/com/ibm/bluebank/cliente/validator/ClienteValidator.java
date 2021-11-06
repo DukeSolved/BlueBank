@@ -4,6 +4,7 @@ import com.ibm.bluebank.cliente.dto.ClienteDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 
 @Service
@@ -14,5 +15,9 @@ public class ClienteValidator {
 
     public void validate(ClienteDto clienteDto, BindingResult result){
         validator.validate(clienteDto, result);
+        // exemplo de validacao
+        if(clienteDto.getCpf() == null){
+            result.addError(new ObjectError("cpf", "Não pode ser null"));
+        }
     }
 }

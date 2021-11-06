@@ -48,6 +48,7 @@ public class ClienteRestController {
         Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
         cliente = clienteService.salvar(cliente);
         ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
+        response.setSucesso(true);
         response.setData(clienteDto);
         return ResponseEntity.ok(response);
     }
@@ -55,21 +56,33 @@ public class ClienteRestController {
     @GetMapping()
     public ResponseEntity<Response> getClientes() {
         Response<List<ClienteDto>> response = new Response<>();
-        List<ClienteDto> clientes = Arrays.asList(new ClienteDto(), new ClienteDto());
-        response.setData(clientes);
+        List<Cliente> clientes = clienteService.getClientes();
+        List<ClienteDto> clientesDto = new ArrayList<>();
+        clientes.forEach(cliente -> {
+            ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
+            clientesDto.add(clienteDto);
+        });
+        response.setSucesso(true);
+        response.setData(clientesDto);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Response> getCliente(@PathParam("id") Long id) {
         Response<ClienteDto> response = new Response<>();
-        response.setData(new ClienteDto());
+        Optional<Cliente> clienteOpt = clienteService.getClienteById(id);
+        clienteOpt.ifPresent(cliente -> {
+            ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
+            response.setSucesso(true);
+            response.setData(clienteDto);
+        });
         return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/{id}/conta/depositar")
     public ResponseEntity<Response> depositar(@PathParam("id") Long id, @RequestBody DepositoDto depositoDto) {
         Response<String> response = new Response<>();
+
         response.setData("Depósito realizado");
         return ResponseEntity.ok(response);
     }
@@ -92,6 +105,8 @@ public class ClienteRestController {
     public ResponseEntity<Response> extrato(@PathParam("id") Long id, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
         Response<ExtratoDto> response = new Response<>();
         Map<String, String> erros = new HashMap<>();
+        String token = ""; // o token do usuario será obetido pelo request;
+        Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
         Date dataInicio = dateConverter.toDate("inicio", inicio, erros);
         Date dataFim = dateConverter.toDate("fim", fim, erros);
         if (erros.size() > 0) {
@@ -99,11 +114,11 @@ public class ClienteRestController {
             response.setSucesso(false);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        String token = ""; // o token do usuario será obetido pelo request;
-        Cliente cliente = clienteService.getClienteByToken(token);
-        ExtratoDto extrato = extratoService.getExtrato(cliente, dataInicio, dataFim);
-        response.setSucesso(true);
-        response.setData(extrato);
+        if (clienteOpt.isPresent()) {
+            ExtratoDto extrato = extratoService.getExtrato(clienteOpt.get(), dataInicio, dataFim);
+            response.setSucesso(true);
+            response.setData(extrato);
+        }
         return ResponseEntity.ok(response);
     }
 }
