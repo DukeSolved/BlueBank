@@ -33,7 +33,7 @@ public class ClienteConverter {
             clienteDto.setCpf(cliente.getCpf());
             Optional<Conta> contaOpt = Optional.ofNullable(cliente.getConta());
             contaOpt.ifPresent(conta -> {
-                clienteDto.setNumero(conta.getNumero());
+                clienteDto.setConta(conta.getNumero());
                 clienteDto.setAgencia(conta.getAgencia());
                 clienteDto.setSaldo(conta.getSaldo());
                 clienteDto.setLimite(conta.getLimite());
@@ -50,9 +50,10 @@ public class ClienteConverter {
             cliente.setNome(clienteDto.getNome());
             cliente.setCpf(clienteDto.getCpf());
             cliente.setFone(clienteDto.getFone());
+            cliente.setEmail(clienteDto.getEmail());
             cliente.setSenha(SenhaUtil.getHash(clienteDto.getSenha()));
             cliente.setRenda(clienteDto.getRenda());
-            Optional<Conta> contaOpt = contaService.getContaByNumeroAndAgencia(clienteDto.getNumero(), clienteDto.getAgencia());
+            Optional<Conta> contaOpt = contaService.getContaByNumeroAndAgencia(clienteDto.getConta(), clienteDto.getAgencia());
             contaOpt.ifPresent(conta -> cliente.setConta(conta));
             return cliente;
         }

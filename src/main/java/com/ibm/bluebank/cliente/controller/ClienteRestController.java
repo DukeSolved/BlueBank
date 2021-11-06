@@ -44,6 +44,7 @@ public class ClienteRestController {
     @PostMapping()
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
+        clienteValidator.validate(clienteRequest, result);
         Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
         cliente = clienteService.salvar(cliente);
         ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);

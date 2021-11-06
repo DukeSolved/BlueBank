@@ -2,7 +2,6 @@ package com.ibm.bluebank.operacao.service.impl;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
 import com.ibm.bluebank.cliente.model.Cliente;
-import com.ibm.bluebank.conta.dto.ContaDto;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.dto.MovimentoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
@@ -11,7 +10,6 @@ import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +26,7 @@ public class ExtratoServiceImpl implements ExtratoService {
         ClienteDto clienteDto = new ClienteDto();
         clienteDto.setNome("Ezequiel Lorenzatti");
 
-        clienteDto.setNumero(1l);
+        clienteDto.setConta(1l);
         clienteDto.setAgencia(1l);
         clienteDto.setSaldo(1000000.00);
 

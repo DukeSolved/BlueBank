@@ -16,13 +16,10 @@ public class ClienteDto {
     private String fone;
     private String senha;
     private Double renda;
-    private Long numero;
+    private Long conta;
     private Long agencia;
     private Double saldo;
     private Double limite;
-	
-    
-    
-    
-    
+
+
 }
