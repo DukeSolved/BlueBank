@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    public Cliente findByToken(String token);
+    Cliente findByToken(String token);
+
+    Integer countByCpf(String cpf);
 }

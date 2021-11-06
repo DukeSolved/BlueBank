@@ -14,4 +14,6 @@ public interface ClienteService {
     List<Cliente> getClientes();
 
     Optional<Cliente> getClienteById(Long id);
+
+    Boolean clienteJaCadastrado(String cpf);
 }

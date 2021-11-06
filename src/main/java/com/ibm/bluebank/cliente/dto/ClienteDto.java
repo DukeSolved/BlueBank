@@ -1,8 +1,11 @@
 package com.ibm.bluebank.cliente.dto;
 
+import com.ibm.bluebank.conta.dto.ContaDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
@@ -16,11 +19,6 @@ public class ClienteDto {
     private String fone;
     private String senha;
     private Double renda;
-    private Long conta;
-    private Long agencia;
-    private Double saldo;
-    private Double limite;
     private String token;
-
-
+    private Optional<ContaDto> conta = Optional.empty();
 }

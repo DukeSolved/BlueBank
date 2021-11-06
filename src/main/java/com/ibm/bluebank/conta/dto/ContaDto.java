@@ -1,25 +1,17 @@
 package com.ibm.bluebank.conta.dto;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Setter
+@Getter
 public class ContaDto {
 
-    private String numero;
-    private BigDecimal saldo;
+    private Long numero;
+    private Long agencia;
+    private Double saldo;
+    private Double limite;
 
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public BigDecimal getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
-    }
 }

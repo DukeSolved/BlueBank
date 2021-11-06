@@ -34,4 +34,9 @@ public class ClienteServiceImpl implements ClienteService {
     public Optional<Cliente> getClienteById(Long id) {
         return clienteRepository.findById(id);
     }
+
+    @Override
+    public Boolean clienteJaCadastrado(String cpf) {
+        return clienteRepository.countByCpf(cpf) > 0;
+    }
 }

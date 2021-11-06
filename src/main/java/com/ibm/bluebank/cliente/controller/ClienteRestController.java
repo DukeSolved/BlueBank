@@ -45,7 +45,16 @@ public class ClienteRestController {
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
         clienteValidator.validate(clienteRequest, result);
+        if (result.hasErrors()) {
+            response.setSucesso(false);
+            Map<String, String> erros = new HashMap<>();
+            result.getAllErrors().forEach(erro -> erros.put(erro.getObjectName(), erro.getDefaultMessage()));
+            response.setErros(erros);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
         Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
+
         cliente = clienteService.salvar(cliente);
         ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
         response.setSucesso(true);

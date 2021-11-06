@@ -3,9 +3,10 @@ package com.ibm.bluebank.cliente.converter;
 import com.ibm.bluebank.cliente.dto.ClienteDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.conta.converter.ContaConverter;
+import com.ibm.bluebank.conta.dto.ContaDto;
 import com.ibm.bluebank.conta.model.Conta;
 import com.ibm.bluebank.conta.service.ContaService;
-import com.ibm.bluebank.shared.utils.SenhaUtil;
+import com.ibm.bluebank.shared.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +35,8 @@ public class ClienteConverter {
             clienteDto.setToken(cliente.getToken());
             Optional<Conta> contaOpt = Optional.ofNullable(cliente.getConta());
             contaOpt.ifPresent(conta -> {
-                clienteDto.setConta(conta.getNumero());
-                clienteDto.setAgencia(conta.getAgencia());
-                clienteDto.setSaldo(conta.getSaldo());
-                clienteDto.setLimite(conta.getLimite());
+                ContaDto contaDto = contaConverter.toDto.apply(conta);
+                clienteDto.setConta(Optional.of(contaDto));
             });
             return clienteDto;
         }
@@ -52,10 +51,9 @@ public class ClienteConverter {
             cliente.setCpf(clienteDto.getCpf());
             cliente.setFone(clienteDto.getFone());
             cliente.setEmail(clienteDto.getEmail());
-            cliente.setSenha(SenhaUtil.getHash(clienteDto.getSenha()));
+            cliente.setSenha(SecurityUtil.getHash(clienteDto.getSenha()));
             cliente.setRenda(clienteDto.getRenda());
-            Optional<Conta> contaOpt = contaService.getContaByNumeroAndAgencia(clienteDto.getConta(), clienteDto.getAgencia());
-            contaOpt.ifPresent(conta -> cliente.setConta(conta));
+            cliente.setToken(SecurityUtil.getToken(clienteDto));
             return cliente;
         }
     };
