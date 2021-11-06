@@ -1,6 +1,5 @@
 package com.ibm.bluebank.cliente.dto;
 
-import com.ibm.bluebank.conta.dto.ContaDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +20,9 @@ public class ClienteDto {
     private Long agencia;
     private Double saldo;
     private Double limite;
-
+	
+    
+    
+    
+    
 }

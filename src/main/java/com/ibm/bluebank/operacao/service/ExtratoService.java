@@ -1,7 +1,7 @@
-package com.ibm.bluebank.extrato.service;
+package com.ibm.bluebank.operacao.service;
 
 import com.ibm.bluebank.cliente.model.Cliente;
-import com.ibm.bluebank.extrato.dto.ExtratoDto;
+import com.ibm.bluebank.operacao.dto.ExtratoDto;
 
 import java.util.Date;
 

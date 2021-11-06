@@ -1,11 +1,11 @@
-package com.ibm.bluebank.extrato.service.impl;
+package com.ibm.bluebank.operacao.service.impl;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.conta.dto.ContaDto;
-import com.ibm.bluebank.extrato.dto.ExtratoDto;
-import com.ibm.bluebank.extrato.dto.MovimentoDto;
-import com.ibm.bluebank.extrato.service.ExtratoService;
+import com.ibm.bluebank.operacao.dto.ExtratoDto;
+import com.ibm.bluebank.operacao.dto.MovimentoDto;
+import com.ibm.bluebank.operacao.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
 import org.springframework.beans.factory.annotation.Autowired;

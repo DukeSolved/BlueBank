@@ -1,4 +1,4 @@
-package com.ibm.bluebank.extrato.dto;
+package com.ibm.bluebank.operacao.dto;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
 
