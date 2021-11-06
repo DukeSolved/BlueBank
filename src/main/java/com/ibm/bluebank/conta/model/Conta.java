@@ -13,8 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.ibm.bluebank.shared.enums.EnumStatusConta;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "TB_CONTA")
 public class Conta {
@@ -43,61 +48,6 @@ public class Conta {
     @Column(name = "STATUS", nullable = false)
     private EnumStatusConta status;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Long numero) {
-		this.numero = numero;
-	}
-
-	public Long getAgencia() {
-		return agencia;
-	}
-
-	public void setAgencia(Long agencia) {
-		this.agencia = agencia;
-	}
-
-	public Double getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
-	}
-
-	public Double getLimite() {
-		return limite;
-	}
-
-	public void setLimite(Double limite) {
-		this.limite = limite;
-	}
-
-	public Date getCriadoEm() {
-		return criadoEm;
-	}
-
-	public void setCriadoEm(Date criadoEm) {
-		this.criadoEm = criadoEm;
-	}
-
-	public EnumStatusConta getStatus() {
-		return status;
-	}
-
-	public void setStatus(EnumStatusConta status) {
-		this.status = status;
-	}
     
     
 

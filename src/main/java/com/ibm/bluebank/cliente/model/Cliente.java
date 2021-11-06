@@ -11,7 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.ibm.bluebank.conta.model.Conta;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "TB_CLIENTE")
 public class Cliente {
@@ -42,71 +48,5 @@ public class Cliente {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Conta.class)
     @JoinColumn(name = "CONTA_ID")
     private Conta conta;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFone() {
-		return fone;
-	}
-
-	public void setFone(String fone) {
-		this.fone = fone;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public Double getRenda() {
-		return renda;
-	}
-
-	public void setRenda(Double renda) {
-		this.renda = renda;
-	}
-
-	public Conta getConta() {
-		return conta;
-	}
-
-	public void setConta(Conta conta) {
-		this.conta = conta;
-	}
-
-    
     
 }
