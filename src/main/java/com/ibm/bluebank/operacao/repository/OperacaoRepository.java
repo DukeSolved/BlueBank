@@ -1,4 +1,4 @@
-package com.ibm.bluebank.cliente.repository;
+package com.ibm.bluebank.operacao.repository;
 
 import com.ibm.bluebank.operacao.model.Operacao;
 import org.springframework.data.jpa.repository.JpaRepository;
