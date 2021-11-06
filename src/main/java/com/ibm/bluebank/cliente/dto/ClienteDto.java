@@ -20,6 +20,7 @@ public class ClienteDto {
     private Long agencia;
     private Double saldo;
     private Double limite;
+    private String token;
 
 
 }

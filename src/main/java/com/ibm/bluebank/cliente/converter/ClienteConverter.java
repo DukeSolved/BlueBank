@@ -31,6 +31,7 @@ public class ClienteConverter {
             clienteDto.setSenha(cliente.getSenha());
             clienteDto.setRenda(cliente.getRenda());
             clienteDto.setCpf(cliente.getCpf());
+            clienteDto.setToken(cliente.getToken());
             Optional<Conta> contaOpt = Optional.ofNullable(cliente.getConta());
             contaOpt.ifPresent(conta -> {
                 clienteDto.setConta(conta.getNumero());

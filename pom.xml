@@ -80,4 +80,21 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>ezequiel</id>
+            <properties>
+                <activatedProperties>ezequiel</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>carlos</id>
+            <properties>
+                <activatedProperties>carlos</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -6,6 +6,9 @@ import com.ibm.bluebank.cliente.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
@@ -13,12 +16,22 @@ public class ClienteServiceImpl implements ClienteService {
     private ClienteRepository clienteRepository;
 
     @Override
-    public Cliente getClienteByToken(String token) {
-        return new Cliente();
+    public Optional<Cliente> getClienteByToken(String token) {
+        return Optional.ofNullable(clienteRepository.findByToken(token));
     }
 
     @Override
     public Cliente salvar(Cliente cliente) {
         return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public List<Cliente> getClientes() {
+        return clienteRepository.findAll();
+    }
+
+    @Override
+    public Optional<Cliente> getClienteById(Long id) {
+        return clienteRepository.findById(id);
     }
 }

@@ -48,5 +48,8 @@ public class Cliente {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Conta.class)
     @JoinColumn(name = "CONTA_ID")
     private Conta conta;
+
+    @Column(name = "TOKEN", nullable = false)
+    private String token;
     
 }
