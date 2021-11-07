@@ -87,18 +87,18 @@
 
     <profiles>
         <profile>
-            <id>ezequiel</id>
+            <id>root-sem-senha</id>
             <properties>
-                <activatedProperties>ezequiel</activatedProperties>
+                <activatedProperties>root-sem-senha</activatedProperties>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
         <profile>
-            <id>carlos</id>
+            <id>root-com-senha</id>
             <properties>
-                <activatedProperties>carlos</activatedProperties>
+                <activatedProperties>root-com-senha</activatedProperties>
             </properties>
         </profile>
     </profiles>
