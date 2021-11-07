@@ -14,6 +14,7 @@ import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.dto.Response;
+import com.ibm.bluebank.shared.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,7 @@ public class ClienteRestController {
         Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
         Conta conta = contaService.criarConta(cliente.getRenda());
         cliente.setConta(conta);
+        cliente.setToken(SecurityUtil.gerarToken(cliente));
 
         cliente = clienteService.salvar(cliente);
         ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);

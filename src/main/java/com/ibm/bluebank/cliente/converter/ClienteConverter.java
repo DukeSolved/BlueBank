@@ -31,7 +31,6 @@ public class ClienteConverter {
             clienteDto.setId(cliente.getId());
             clienteDto.setNome(cliente.getNome());
             clienteDto.setEmail(cliente.getEmail());
-            clienteDto.setSenha(cliente.getSenha());
             clienteDto.setRenda(cliente.getRenda());
             clienteDto.setCpf(CpfUtil.applicarMascara(cliente.getCpf()));
             clienteDto.setToken(cliente.getToken());
@@ -56,7 +55,7 @@ public class ClienteConverter {
             cliente.setTelefone(TelefoneUtil.removerMascara(clienteDto.getTelefone()));
             cliente.setSenha(SecurityUtil.getHash(clienteDto.getSenha()));
             cliente.setRenda(clienteDto.getRenda());
-            cliente.setToken(SecurityUtil.gerarToken(clienteDto));
+
             return cliente;
         }
     };

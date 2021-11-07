@@ -1,5 +1,9 @@
 package com.ibm.bluebank.shared.utils;
 
+import javax.swing.text.MaskFormatter;
+import java.text.ParseException;
+import java.util.logging.Logger;
+
 public class CpfUtil {
     public static boolean isValid(String cpf) {
         int d1, d2;
@@ -47,11 +51,21 @@ public class CpfUtil {
     }
 
     public static String removerMascara(String cpf) {
-        return cpf.replaceAll("/|\\.|-","");
+        return cpf.replaceAll("/|\\.|-", "");
     }
 
+    private static String CPF = "###.###.###-##";
+
     public static String applicarMascara(String cpf) {
-        cpf = cpf.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3-$4");
+        MaskFormatter mk;
+        try {
+            mk = new MaskFormatter(CPF);
+            mk.setValueContainsLiteralCharacters(false);
+            cpf = mk.valueToString(cpf);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Logger.getLogger("Erro ap aplicar máscara");
+        }
         return cpf;
     }
 }
