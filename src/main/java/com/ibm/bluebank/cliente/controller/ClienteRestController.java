@@ -85,10 +85,10 @@ public class ClienteRestController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Response> getCliente(@PathParam("id") Long id) {
+    @GetMapping(value = "/{token}")
+    public ResponseEntity<Response> getCliente(@PathParam("token") String token) {
         Response<ClienteDto> response = new Response<>();
-        Optional<Cliente> clienteOpt = clienteService.getClienteById(id);
+        Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
         clienteOpt.ifPresent(cliente -> {
             ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
             response.setSucesso(true);
@@ -97,33 +97,32 @@ public class ClienteRestController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{id}/conta/depositar")
-    public ResponseEntity<Response> depositar(@PathParam("id") Long id, @RequestBody DepositoDto depositoDto) {
+    @PostMapping(value = "/{token}/conta/depositar")
+    public ResponseEntity<Response> depositar(@PathParam("token") String token, @RequestBody DepositoDto depositoDto) {
         Response<String> response = new Response<>();
 
         response.setData("Depósito realizado");
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{id}/conta/sacar")
-    public ResponseEntity<Response> sacar(@PathParam("id") Long id, @RequestBody SaqueDto saqueDto) {
+    @PostMapping(value = "/{token}/conta/sacar")
+    public ResponseEntity<Response> sacar(@PathParam("token") String token, @RequestBody SaqueDto saqueDto) {
         Response<String> response = new Response<>();
         response.setData("Saque realizado");
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{id}/conta/tranferir")
-    public ResponseEntity<Response> transferir(@PathParam("id") Long id, @RequestBody TransferenciaDto transferenciaDto) {
+    @PostMapping(value = "/{token}/conta/tranferir")
+    public ResponseEntity<Response> transferir(@PathParam("token") String token, @RequestBody TransferenciaDto transferenciaDto) {
         Response<String> response = new Response<>();
         response.setData("Transferência realizada");
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "{id}/conta/extrato")
-    public ResponseEntity<Response> extrato(@PathParam("id") Long id, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
+    @GetMapping(value = "{token}/conta/extrato")
+    public ResponseEntity<Response> extrato(@PathParam("token") String token, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
         Response<ExtratoDto> response = new Response<>();
         Map<String, String> erros = new HashMap<>();
-        String token = ""; // o token do usuario será obetido pelo request;
         Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
         Date dataInicio = dateConverter.toDate("inicio", inicio, erros);
         Date dataFim = dateConverter.toDate("fim", fim, erros);

@@ -1,5 +1,6 @@
 package com.ibm.bluebank.cliente.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ibm.bluebank.conta.dto.ContaDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClienteDto {
 
     private Long id;

@@ -28,7 +28,6 @@ public class ClienteConverter {
         @Override
         public ClienteDto apply(Cliente cliente) {
             ClienteDto clienteDto = new ClienteDto();
-            clienteDto.setId(cliente.getId());
             clienteDto.setNome(cliente.getNome());
             clienteDto.setEmail(cliente.getEmail());
             clienteDto.setRenda(cliente.getRenda());
