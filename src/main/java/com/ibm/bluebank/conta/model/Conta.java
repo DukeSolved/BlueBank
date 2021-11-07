@@ -30,10 +30,10 @@ public class Conta {
     private Long id;
 
     @Column(name = "NUMERO", nullable = false)
-    private Long numero;
+    private String numero;
 
     @Column(name = "AGENCIA", nullable = false)
-    private Long agencia;
+    private String agencia;
 
     @Column(name = "SALDO", nullable = false)
     private Double saldo;

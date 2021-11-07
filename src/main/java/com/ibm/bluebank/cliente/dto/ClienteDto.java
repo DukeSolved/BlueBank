@@ -16,7 +16,7 @@ public class ClienteDto {
     private String nome;
     private String cpf;
     private String email;
-    private String fone;
+    private String telefone;
     private String senha;
     private Double renda;
     private String token;

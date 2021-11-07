@@ -3,6 +3,7 @@ package com.ibm.bluebank.conta.service.impl;
 import com.ibm.bluebank.conta.model.Conta;
 import com.ibm.bluebank.conta.repository.ContaRepository;
 import com.ibm.bluebank.conta.service.ContaService;
+import com.ibm.bluebank.shared.utils.ContaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,12 @@ public class ContaServiceImpl implements ContaService {
     @Override
     public Optional<Conta> getContaByNumeroAndAgencia(Long numero, Long agencia) {
         return contaRepository.findContaByNumeroAndAgencia(numero, agencia);
+    }
+
+    @Override
+    public Conta criarConta(Double renda) {
+        Conta conta = ContaUtil.getConta(renda);
+        contaRepository.save(conta);
+        return conta;
     }
 }

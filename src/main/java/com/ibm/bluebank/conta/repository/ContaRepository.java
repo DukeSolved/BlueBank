@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-    public Optional<Conta> findContaByNumeroAndAgencia(Long numero, Long agencia);
+    Optional<Conta> findContaByNumeroAndAgencia(Long numero, Long agencia);
+
 }

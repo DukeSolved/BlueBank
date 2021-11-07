@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 public class ContaDto {
 
-    private Long numero;
-    private Long agencia;
+    private String numero;
+    private String agencia;
     private Double saldo;
     private Double limite;
 

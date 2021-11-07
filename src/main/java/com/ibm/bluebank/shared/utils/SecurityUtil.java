@@ -1,17 +1,17 @@
 package com.ibm.bluebank.shared.utils;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.util.DigestUtils;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 
 public class SecurityUtil {
 
     public static String getHash(String senha) {
-        return Arrays.toString(DigestUtils.sha1(senha));
+        return DigestUtils.md5DigestAsHex(senha.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String getToken(ClienteDto clienteDto) {
+    public static String gerarToken(ClienteDto clienteDto) {
         StringBuilder token = new StringBuilder();
         token.append(clienteDto.getCpf());
         token.append(clienteDto.getEmail());
@@ -19,6 +19,6 @@ public class SecurityUtil {
             token.append(clienteDto.getConta().get().getAgencia());
             token.append(clienteDto.getConta().get().getNumero());
         }
-        return Arrays.toString(DigestUtils.sha1(token.toString()));
+        return DigestUtils.md5DigestAsHex(token.toString().getBytes(StandardCharsets.UTF_8));
     }
 }

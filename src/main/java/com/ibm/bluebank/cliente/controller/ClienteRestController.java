@@ -8,6 +8,8 @@ import com.ibm.bluebank.cliente.dto.TransferenciaDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
+import com.ibm.bluebank.conta.model.Conta;
+import com.ibm.bluebank.conta.service.ContaService;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
@@ -40,6 +42,9 @@ public class ClienteRestController {
     @Autowired
     private DataConverter dateConverter;
 
+    @Autowired
+    private ContaService contaService;
+
 
     @PostMapping()
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
@@ -54,6 +59,8 @@ public class ClienteRestController {
         }
 
         Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
+        Conta conta = contaService.criarConta(cliente.getRenda());
+        cliente.setConta(conta);
 
         cliente = clienteService.salvar(cliente);
         ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);

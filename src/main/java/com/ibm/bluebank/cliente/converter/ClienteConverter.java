@@ -6,7 +6,9 @@ import com.ibm.bluebank.conta.converter.ContaConverter;
 import com.ibm.bluebank.conta.dto.ContaDto;
 import com.ibm.bluebank.conta.model.Conta;
 import com.ibm.bluebank.conta.service.ContaService;
+import com.ibm.bluebank.shared.utils.CpfUtil;
 import com.ibm.bluebank.shared.utils.SecurityUtil;
+import com.ibm.bluebank.shared.utils.TelefoneUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,9 @@ public class ClienteConverter {
             clienteDto.setEmail(cliente.getEmail());
             clienteDto.setSenha(cliente.getSenha());
             clienteDto.setRenda(cliente.getRenda());
-            clienteDto.setCpf(cliente.getCpf());
+            clienteDto.setCpf(CpfUtil.applicarMascara(cliente.getCpf()));
             clienteDto.setToken(cliente.getToken());
+            clienteDto.setTelefone(TelefoneUtil.aplicarMascara(cliente.getTelefone()));
             Optional<Conta> contaOpt = Optional.ofNullable(cliente.getConta());
             contaOpt.ifPresent(conta -> {
                 ContaDto contaDto = contaConverter.toDto.apply(conta);
@@ -48,12 +51,12 @@ public class ClienteConverter {
             Cliente cliente = new Cliente();
             cliente.setId(clienteDto.getId());
             cliente.setNome(clienteDto.getNome());
-            cliente.setCpf(clienteDto.getCpf());
-            cliente.setFone(clienteDto.getFone());
+            cliente.setCpf(CpfUtil.removerMascara(clienteDto.getCpf()));
             cliente.setEmail(clienteDto.getEmail());
+            cliente.setTelefone(TelefoneUtil.removerMascara(clienteDto.getTelefone()));
             cliente.setSenha(SecurityUtil.getHash(clienteDto.getSenha()));
             cliente.setRenda(clienteDto.getRenda());
-            cliente.setToken(SecurityUtil.getToken(clienteDto));
+            cliente.setToken(SecurityUtil.gerarToken(clienteDto));
             return cliente;
         }
     };
