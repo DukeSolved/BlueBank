@@ -1,25 +1,16 @@
 package com.ibm.bluebank.cliente.dto;
 
-import com.ibm.bluebank.conta.dto.ContaDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class DepositoDto {
 
     private Double valor;
-    private ContaDto conta;
+    private String numero;
+    private String agencia;
 
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    public ContaDto getConta() {
-        return conta;
-    }
-
-    public void setConta(ContaDto conta) {
-        this.conta = conta;
-    }
 }

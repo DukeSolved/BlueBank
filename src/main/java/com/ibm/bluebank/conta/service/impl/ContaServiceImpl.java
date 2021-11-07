@@ -21,7 +21,7 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Optional<Conta> getContaByNumeroAndAgencia(Long numero, Long agencia) {
+    public Optional<Conta> getContaByNumeroAndAgencia(String numero, String agencia) {
         return contaRepository.findContaByNumeroAndAgencia(numero, agencia);
     }
 

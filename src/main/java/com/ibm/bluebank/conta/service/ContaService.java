@@ -8,7 +8,7 @@ public interface ContaService {
 
     Optional<Conta> getContaById(Long contaId);
 
-    Optional<Conta> getContaByNumeroAndAgencia(Long numero, Long agencia);
+    Optional<Conta> getContaByNumeroAndAgencia(String numero, String agencia);
 
     Conta criarConta(Double renda);
 }

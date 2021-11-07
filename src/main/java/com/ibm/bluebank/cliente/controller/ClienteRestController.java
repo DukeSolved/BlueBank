@@ -8,6 +8,7 @@ import com.ibm.bluebank.cliente.dto.TransferenciaDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
+import com.ibm.bluebank.operacao.validator.OperacaoValidator;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
@@ -33,6 +34,9 @@ public class ClienteRestController {
 
     @Autowired
     private ClienteValidator clienteValidator;
+
+    @Autowired
+    private OperacaoValidator depositoValidator;
 
     @Autowired
     private ExtratoService extratoService;
@@ -73,7 +77,7 @@ public class ClienteRestController {
     }
 
     @GetMapping(value = "/{token}")
-    public ResponseEntity<Response> getCliente(@PathParam("token") String token) {
+    public ResponseEntity<Response> getCliente(@PathVariable(value = "token") String token, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
         Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
         clienteOpt.ifPresent(cliente -> {
@@ -84,10 +88,10 @@ public class ClienteRestController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{token}/conta/depositar")
-    public ResponseEntity<Response> depositar(@PathParam("token") String token, @RequestBody DepositoDto depositoDto) {
+    @PostMapping(value = "/{token}/depositar")
+    public ResponseEntity<Response> depositar(@PathVariable("token") String token, @RequestBody DepositoDto depositoDto, BindingResult result) {
         Response<String> response = new Response<>();
-
+        depositoValidator.validate(token, depositoDto, result);
         response.setData("Depósito realizado");
         return ResponseEntity.ok(response);
     }

@@ -1,22 +1,16 @@
 package com.ibm.bluebank.cliente.validator;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
-import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.shared.utils.CpfUtil;
 import com.ibm.bluebank.shared.utils.EmailUtil;
 import com.ibm.bluebank.shared.utils.TelefoneUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ibm.bluebank.shared.validator.Validator;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import java.util.Optional;
-
 @Service
-public class ClienteValidator {
-
-    @Autowired
-    private ClienteService clienteService;
+public class ClienteValidator extends Validator {
 
     public void validate(ClienteDto clienteDto, BindingResult result) {
         validarCampoStringObrigatorio(clienteDto.getNome(), "nome", "Nome não informado", result);
@@ -61,19 +55,4 @@ public class ClienteValidator {
     }
 
 
-    private Boolean validarCampoStringObrigatorio(String param, String name, String mensagemSeNaoPresente, BindingResult result) {
-        Optional<String> paramOpt = Optional.ofNullable(param);
-        if (!paramOpt.isPresent()) {
-            result.addError(new ObjectError(name, mensagemSeNaoPresente));
-        }
-        return paramOpt.isPresent();
-    }
-
-    private Boolean validarCampoDoubleObrigatorio(Double param, String name, String mensagemSeNaoPresente, BindingResult result) {
-        boolean isNull = param == null;
-        if(isNull){
-            result.addError(new ObjectError(name, mensagemSeNaoPresente));
-        }
-        return isNull;
-    }
 }
