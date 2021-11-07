@@ -20,10 +20,11 @@ public class ClienteValidator {
         if (optCpf.isPresent()) {
             boolean clienteJaCadastrado = clienteService.clienteJaCadastrado(clienteDto.getCpf());
             if (clienteJaCadastrado) {
-                result.addError(new ObjectError("cpf", "O CPF já está cadastrado"));
+                result.addError(new ObjectError("cpf", "Cliente já está cadastrado"));
             }
         } else {
-            result.addError(new ObjectError("cpf", "O CPF não informado"));
+            result.addError(new ObjectError("cpf", "CPF não informado"));
         }
+        // validar outras condições possíveis
     }
 }
