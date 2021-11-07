@@ -8,13 +8,10 @@ import com.ibm.bluebank.cliente.dto.TransferenciaDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
-import com.ibm.bluebank.conta.model.Conta;
-import com.ibm.bluebank.conta.service.ContaService;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.dto.Response;
-import com.ibm.bluebank.shared.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,10 +40,6 @@ public class ClienteRestController {
     @Autowired
     private DataConverter dateConverter;
 
-    @Autowired
-    private ContaService contaService;
-
-
     @PostMapping()
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
@@ -59,13 +52,7 @@ public class ClienteRestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        Cliente cliente = clienteConverter.toModel.apply(clienteRequest);
-        Conta conta = contaService.criarConta(cliente.getRenda());
-        cliente.setConta(conta);
-        cliente.setToken(SecurityUtil.gerarToken(cliente));
-
-        cliente = clienteService.salvar(cliente);
-        ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
+        ClienteDto clienteDto = clienteService.criarCliente(clienteRequest);
         response.setSucesso(true);
         response.setData(clienteDto);
         return ResponseEntity.ok(response);
