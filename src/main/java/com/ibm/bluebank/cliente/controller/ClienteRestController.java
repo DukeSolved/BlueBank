@@ -8,9 +8,10 @@ import com.ibm.bluebank.cliente.dto.TransferenciaDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
-import com.ibm.bluebank.operacao.validator.OperacaoValidator;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
 import com.ibm.bluebank.operacao.service.ExtratoService;
+import com.ibm.bluebank.operacao.validator.OperacaoValidator;
+import com.ibm.bluebank.shared.controller.Controller;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.dto.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("clientes")
-public class ClienteRestController {
+public class ClienteRestController extends Controller {
 
     @Autowired
     private ClienteService clienteService;
@@ -48,11 +49,9 @@ public class ClienteRestController {
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
         clienteValidator.validate(clienteRequest, result);
+
         if (result.hasErrors()) {
-            response.setSucesso(false);
-            Map<String, String> erros = new HashMap<>();
-            result.getAllErrors().forEach(erro -> erros.put(erro.getObjectName(), erro.getDefaultMessage()));
-            response.setErros(erros);
+            fillResponseErrors(response, result);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
@@ -61,6 +60,7 @@ public class ClienteRestController {
         response.setData(clienteDto);
         return ResponseEntity.ok(response);
     }
+
 
     @GetMapping()
     public ResponseEntity<Response> getClientes() {
@@ -129,4 +129,5 @@ public class ClienteRestController {
         }
         return ResponseEntity.ok(response);
     }
+
 }
