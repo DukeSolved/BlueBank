@@ -26,7 +26,7 @@ public class Operacao {
     private Conta contaOperacao;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Conta.class)
-    @JoinColumn(name="CONTA_DESTINO")
+    @JoinColumn(name="CONTA_DESTINO_ID")
     private Conta contaDestino;
 
     @Enumerated(EnumType.STRING)

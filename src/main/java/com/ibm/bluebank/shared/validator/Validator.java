@@ -18,7 +18,7 @@ public abstract class Validator {
     public ContaService contaService;
 
     public void validarToken(String token, BindingResult result) {
-        if (validarCampoStringObrigatorio(token, "token", "Token não informado", result)) {
+        if (validarCampoString(token, "token", "Token não informado", result)) {
             Optional<Cliente> cliente = clienteService.getClienteByToken(token);
             if (!cliente.isPresent()) {
                 result.addError(new ObjectError("token", "Token inválido"));
@@ -26,10 +26,16 @@ public abstract class Validator {
         }
     }
 
-    public Boolean validarCampoStringObrigatorio(String param, String name, String mensagemSeNaoPresente, BindingResult result) {
+    public Boolean validarCampoString(String param, String name, String mensagemSeNaoPresente, BindingResult result) {
+        return validarCampoString(param, name, mensagemSeNaoPresente, result, true);
+    }
+
+    public Boolean validarCampoString(String param, String name, String mensagemSeNaoPresente, BindingResult result, Boolean obrigatorio) {
         Optional<String> paramOpt = Optional.ofNullable(param);
         if (!paramOpt.isPresent()) {
-            result.addError(new ObjectError(name, mensagemSeNaoPresente));
+            if (obrigatorio) {
+                result.addError(new ObjectError(name, mensagemSeNaoPresente));
+            }
         }
         return paramOpt.isPresent();
     }

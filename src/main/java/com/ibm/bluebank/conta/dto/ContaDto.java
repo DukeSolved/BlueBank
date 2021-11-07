@@ -13,5 +13,6 @@ public class ContaDto {
     private String agencia;
     private Double saldo;
     private Double limite;
+    private Double limiteDisponivel = 0.0;
 
 }

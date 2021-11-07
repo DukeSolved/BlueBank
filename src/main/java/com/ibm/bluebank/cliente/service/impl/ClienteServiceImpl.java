@@ -27,6 +27,11 @@ public class ClienteServiceImpl implements ClienteService {
     private ContaService contaService;
 
     @Override
+    public Optional<Cliente> getClienteByCpf(String cpf) {
+        return Optional.ofNullable(clienteRepository.findByCpf(cpf));
+    }
+
+    @Override
     public Optional<Cliente> getClienteByToken(String token) {
         return Optional.ofNullable(clienteRepository.findByToken(token));
     }

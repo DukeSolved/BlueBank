@@ -10,6 +10,8 @@ public interface ClienteService {
 
     ClienteDto criarCliente(ClienteDto clienteDto);
 
+    Optional<Cliente> getClienteByCpf(String cpf);
+
     Optional<Cliente> getClienteByToken(String token);
 
     List<Cliente> getClientes();

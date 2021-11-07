@@ -7,5 +7,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Cliente findByToken(String token);
 
+    Cliente findByCpf(String cpf);
+
     Integer countByCpf(String cpf);
 }

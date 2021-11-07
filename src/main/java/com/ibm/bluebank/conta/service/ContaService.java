@@ -11,4 +11,10 @@ public interface ContaService {
     Optional<Conta> getContaByNumeroAndAgencia(String numero, String agencia);
 
     Conta criarConta(Double renda);
+
+    Conta salvar(Conta conta);
+
+    void adicionarAoSaldo(Conta contaOperacao, Double valor);
+
+    void descontarDoSaldo(Conta contaOperacao, Double valor);
 }

@@ -2,22 +2,25 @@ package com.ibm.bluebank.cliente.controller;
 
 import com.ibm.bluebank.cliente.converter.ClienteConverter;
 import com.ibm.bluebank.cliente.dto.ClienteDto;
-import com.ibm.bluebank.cliente.dto.DepositoDto;
-import com.ibm.bluebank.cliente.dto.SaqueDto;
-import com.ibm.bluebank.cliente.dto.TransferenciaDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
+import com.ibm.bluebank.conta.converter.ContaConverter;
+import com.ibm.bluebank.operacao.converter.OperacaoConverter;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
-import com.ibm.bluebank.operacao.service.ExtratoService;
+import com.ibm.bluebank.operacao.dto.OperacaoDto;
+import com.ibm.bluebank.operacao.model.Operacao;
+import com.ibm.bluebank.operacao.service.OperacaoService;
 import com.ibm.bluebank.operacao.validator.OperacaoValidator;
 import com.ibm.bluebank.shared.controller.Controller;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.dto.Response;
+import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -34,13 +37,22 @@ public class ClienteRestController extends Controller {
     private ClienteConverter clienteConverter;
 
     @Autowired
+    private OperacaoConverter operacaoConverter;
+
+    @Autowired
     private ClienteValidator clienteValidator;
 
     @Autowired
-    private OperacaoValidator depositoValidator;
+    private OperacaoValidator operacaoValidator;
 
     @Autowired
-    private ExtratoService extratoService;
+    private OperacaoService extratoService;
+
+    @Autowired
+    private OperacaoService operacaoService;
+
+    @Autowired
+    private ContaConverter contaConverter;
 
     @Autowired
     private DataConverter dateConverter;
@@ -48,7 +60,7 @@ public class ClienteRestController extends Controller {
     @PostMapping()
     public ResponseEntity<Response> salvar(@RequestBody ClienteDto clienteRequest, BindingResult result) {
         Response<ClienteDto> response = new Response<>();
-        clienteValidator.validate(clienteRequest, result);
+        clienteValidator.validarClienteDto(clienteRequest, result);
 
         if (result.hasErrors()) {
             fillResponseErrors(response, result);
@@ -76,10 +88,17 @@ public class ClienteRestController extends Controller {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/{token}")
-    public ResponseEntity<Response> getCliente(@PathVariable(value = "token") String token, BindingResult result) {
+    @GetMapping(value = "/{cpf}")
+    public ResponseEntity<Response> getCliente(@PathVariable(value = "cpf") String cpf) {
         Response<ClienteDto> response = new Response<>();
-        Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
+        Map<String, String> erros = new HashMap<>();
+        MapBindingResult result = new MapBindingResult(erros, "cpf");
+        clienteValidator.validarCPF(cpf, result);
+        if (result.hasErrors()) {
+            fillResponseErrors(response, result);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        Optional<Cliente> clienteOpt = clienteService.getClienteByCpf(cpf);
         clienteOpt.ifPresent(cliente -> {
             ClienteDto clienteDto = clienteConverter.toDto.apply(cliente);
             response.setSucesso(true);
@@ -89,29 +108,55 @@ public class ClienteRestController extends Controller {
     }
 
     @PostMapping(value = "/{token}/depositar")
-    public ResponseEntity<Response> depositar(@PathVariable("token") String token, @RequestBody DepositoDto depositoDto, BindingResult result) {
+    public ResponseEntity<Response> depositar(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
-        depositoValidator.validate(token, depositoDto, result);
-        response.setData("Depósito realizado");
+        operacaoDto.setTipo(EnumTipoMovimento.DEPOSITO);
+        operacaoValidator.validarOperacao(token, operacaoDto, result);
+        if (result.hasErrors()) {
+            fillResponseErrors(response, result);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        Operacao operacao = operacaoConverter.toModel.apply(operacaoDto);
+        operacaoService.deposito(operacao);
+        response.setSucesso(true);
+        response.setData("Depósito realizado !");
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{token}/conta/sacar")
-    public ResponseEntity<Response> sacar(@PathParam("token") String token, @RequestBody SaqueDto saqueDto) {
+    @PostMapping(value = "/{token}/sacar")
+    public ResponseEntity<Response> sacar(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
-        response.setData("Saque realizado");
+        operacaoDto.setTipo(EnumTipoMovimento.SAQUE);
+        operacaoValidator.validarOperacao(token, operacaoDto, result);
+        if (result.hasErrors()) {
+            fillResponseErrors(response, result);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        Operacao operacao = operacaoConverter.toModel.apply(operacaoDto);
+        operacaoService.saque(operacao);
+        response.setSucesso(true);
+        response.setData("Saque realizado !");
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/{token}/conta/tranferir")
-    public ResponseEntity<Response> transferir(@PathParam("token") String token, @RequestBody TransferenciaDto transferenciaDto) {
+    @PostMapping(value = "/{token}/transferir")
+    public ResponseEntity<Response> transferir(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
+        operacaoDto.setTipo(EnumTipoMovimento.TRANSFERENCIA);
+        operacaoValidator.validarOperacao(token, operacaoDto, result);
+        if (result.hasErrors()) {
+            fillResponseErrors(response, result);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        Operacao operacao = operacaoConverter.toModel.apply(operacaoDto);
+        operacaoService.transferir(operacao);
+        response.setSucesso(true);
         response.setData("Transferência realizada");
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "{token}/conta/extrato")
-    public ResponseEntity<Response> extrato(@PathParam("token") String token, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
+    public ResponseEntity<Response> extrato(@PathVariable("token") String token, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
         Response<ExtratoDto> response = new Response<>();
         Map<String, String> erros = new HashMap<>();
         Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);

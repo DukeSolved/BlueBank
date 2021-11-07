@@ -17,7 +17,12 @@ public class ContaConverter {
             contaDto.setAgencia(conta.getAgencia());
             contaDto.setSaldo(conta.getSaldo());
             contaDto.setLimite(conta.getLimite());
+            if (conta.getSaldo() < 0) {
+                contaDto.setLimiteDisponivel(conta.getSaldo() + conta.getLimite());
+            }
             return contaDto;
         }
     };
+
+
 }

@@ -31,4 +31,23 @@ public class ContaServiceImpl implements ContaService {
         contaRepository.save(conta);
         return conta;
     }
+
+    @Override
+    public Conta salvar(Conta conta) {
+        return contaRepository.save(conta);
+    }
+
+    @Override
+    public void adicionarAoSaldo(Conta conta, Double valor) {
+        Double novoSaldo = conta.getSaldo() + valor;
+        conta.setSaldo(novoSaldo);
+        contaRepository.save(conta);
+    }
+
+    @Override
+    public void descontarDoSaldo(Conta conta, Double valor) {
+        Double novoSaldo = conta.getSaldo() - valor;
+        conta.setSaldo(novoSaldo);
+        contaRepository.save(conta);
+    }
 }
