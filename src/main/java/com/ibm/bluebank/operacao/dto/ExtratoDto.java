@@ -1,9 +1,15 @@
 package com.ibm.bluebank.operacao.dto;
 
 import com.ibm.bluebank.cliente.dto.ClienteDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class ExtratoDto {
 
     private ClienteDto cliente;
@@ -11,35 +17,4 @@ public class ExtratoDto {
     private String fim;
     private List<MovimentoDto> movimento;
 
-    public ClienteDto getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(ClienteDto cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getInicio() {
-        return inicio;
-    }
-
-    public void setInicio(String inicio) {
-        this.inicio = inicio;
-    }
-
-    public String getFim() {
-        return fim;
-    }
-
-    public void setFim(String fim) {
-        this.fim = fim;
-    }
-
-    public List<MovimentoDto> getMovimento() {
-        return movimento;
-    }
-
-    public void setMovimento(List<MovimentoDto> movimento) {
-        this.movimento = movimento;
-    }
 }

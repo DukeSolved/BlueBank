@@ -1,6 +1,6 @@
 package com.ibm.bluebank.operacao.dto;
 
-import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
+import com.ibm.bluebank.shared.enums.EnumTipoOperacao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class OperacaoDto {
 
-    private EnumTipoMovimento tipo;
+    private EnumTipoOperacao tipo;
     private Double valor;
     private String numeroOperacao;
     private String agenciaOperacao;

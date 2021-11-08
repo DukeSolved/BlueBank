@@ -8,19 +8,21 @@ import java.util.Date;
 
 public class DateUtil {
 
-    public static Date toDate(String toParse, String pattern) throws DateParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    public static String DATE_FORMAT = "yyyy-MM-dd";
+
+    public static Date toDate(String toParse) throws DateParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         Date data = null;
         try {
             data = sdf.parse(toParse);
         } catch (ParseException e) {
-            throw new DateParseException(pattern);
+            throw new DateParseException(DATE_FORMAT);
         }
         return data;
     }
 
-    public static String toString(Date toString, String pattern) {
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    public static String toString(Date toString) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String parsed = sdf.format(toString);
         return parsed;
     }

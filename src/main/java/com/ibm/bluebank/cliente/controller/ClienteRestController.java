@@ -5,9 +5,9 @@ import com.ibm.bluebank.cliente.dto.ClienteDto;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.cliente.service.ClienteService;
 import com.ibm.bluebank.cliente.validator.ClienteValidator;
-import com.ibm.bluebank.conta.converter.ContaConverter;
 import com.ibm.bluebank.operacao.converter.OperacaoConverter;
 import com.ibm.bluebank.operacao.dto.ExtratoDto;
+import com.ibm.bluebank.operacao.dto.MovimentoDto;
 import com.ibm.bluebank.operacao.dto.OperacaoDto;
 import com.ibm.bluebank.operacao.model.Operacao;
 import com.ibm.bluebank.operacao.service.OperacaoService;
@@ -15,7 +15,7 @@ import com.ibm.bluebank.operacao.validator.OperacaoValidator;
 import com.ibm.bluebank.shared.controller.Controller;
 import com.ibm.bluebank.shared.dates.converter.DataConverter;
 import com.ibm.bluebank.shared.dto.Response;
-import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
+import com.ibm.bluebank.shared.enums.EnumTipoOperacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.*;
 
 @RestController
@@ -46,13 +45,7 @@ public class ClienteRestController extends Controller {
     private OperacaoValidator operacaoValidator;
 
     @Autowired
-    private OperacaoService extratoService;
-
-    @Autowired
     private OperacaoService operacaoService;
-
-    @Autowired
-    private ContaConverter contaConverter;
 
     @Autowired
     private DataConverter dateConverter;
@@ -110,7 +103,7 @@ public class ClienteRestController extends Controller {
     @PostMapping(value = "/{token}/depositar")
     public ResponseEntity<Response> depositar(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
-        operacaoDto.setTipo(EnumTipoMovimento.DEPOSITO);
+        operacaoDto.setTipo(EnumTipoOperacao.DEPOSITO);
         operacaoValidator.validarOperacao(token, operacaoDto, result);
         if (result.hasErrors()) {
             fillResponseErrors(response, result);
@@ -126,7 +119,7 @@ public class ClienteRestController extends Controller {
     @PostMapping(value = "/{token}/sacar")
     public ResponseEntity<Response> sacar(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
-        operacaoDto.setTipo(EnumTipoMovimento.SAQUE);
+        operacaoDto.setTipo(EnumTipoOperacao.SAQUE);
         operacaoValidator.validarOperacao(token, operacaoDto, result);
         if (result.hasErrors()) {
             fillResponseErrors(response, result);
@@ -142,7 +135,7 @@ public class ClienteRestController extends Controller {
     @PostMapping(value = "/{token}/transferir")
     public ResponseEntity<Response> transferir(@PathVariable("token") String token, @RequestBody OperacaoDto operacaoDto, BindingResult result) {
         Response<String> response = new Response<>();
-        operacaoDto.setTipo(EnumTipoMovimento.TRANSFERENCIA);
+        operacaoDto.setTipo(EnumTipoOperacao.TRANSFERENCIA);
         operacaoValidator.validarOperacao(token, operacaoDto, result);
         if (result.hasErrors()) {
             fillResponseErrors(response, result);
@@ -155,20 +148,30 @@ public class ClienteRestController extends Controller {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "{token}/conta/extrato")
+    @GetMapping(value = "/{token}/extrato")
     public ResponseEntity<Response> extrato(@PathVariable("token") String token, @RequestParam("inicio") String inicio, @RequestParam("fim") String fim) {
         Response<ExtratoDto> response = new Response<>();
         Map<String, String> erros = new HashMap<>();
-        Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
-        Date dataInicio = dateConverter.toDate("inicio", inicio, erros);
-        Date dataFim = dateConverter.toDate("fim", fim, erros);
+        MapBindingResult result = new MapBindingResult(erros, "extrato");
+        operacaoValidator.validarExtrato(token, inicio, fim, result);
         if (erros.size() > 0) {
-            response.setErros(erros);
-            response.setSucesso(false);
+            fillResponseErrors(response, result);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+        Optional<Cliente> clienteOpt = clienteService.getClienteByToken(token);
+        Date dataInicio = dateConverter.toDate(inicio);
+        Date dataFim = dateConverter.toDate(fim);
         if (clienteOpt.isPresent()) {
-            ExtratoDto extrato = extratoService.getExtrato(clienteOpt.get(), dataInicio, dataFim);
+            ExtratoDto extrato = new ExtratoDto();
+            extrato.setCliente(clienteConverter.toDto.apply(clienteOpt.get()));
+            extrato.setInicio(dateConverter.toString(dataInicio));
+            extrato.setFim(dateConverter.toString(dataFim));
+            List<MovimentoDto> movimentos = new ArrayList<>();
+            List<Operacao> operacoes = operacaoService.getOperacoes(clienteOpt.get(), dataInicio, dataFim);
+            operacoes.forEach(operacao -> {
+                movimentos.add(operacaoConverter.toMovimentoDto.apply(operacao));
+            });
+            extrato.setMovimento(movimentos);
             response.setSucesso(true);
             response.setData(extrato);
         }

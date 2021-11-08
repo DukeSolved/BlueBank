@@ -3,7 +3,11 @@ package com.ibm.bluebank.operacao.validator;
 import com.ibm.bluebank.cliente.model.Cliente;
 import com.ibm.bluebank.conta.model.Conta;
 import com.ibm.bluebank.operacao.dto.OperacaoDto;
+import com.ibm.bluebank.shared.dates.converter.DataConverter;
+import com.ibm.bluebank.shared.dates.exceptions.DateParseException;
+import com.ibm.bluebank.shared.utils.DateUtil;
 import com.ibm.bluebank.shared.validator.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -13,6 +17,9 @@ import java.util.Optional;
 @Service
 public class OperacaoValidator extends Validator {
 
+    @Autowired
+    private DataConverter dataConverter;
+
     public void validarOperacao(String token, OperacaoDto operacaoDto, BindingResult result) {
         validarToken(token, result);
         validarValor(operacaoDto.getValor(), result);
@@ -20,6 +27,20 @@ public class OperacaoValidator extends Validator {
         validarContaDestino(operacaoDto, result);
         if (!result.hasErrors()) {
             validarSaldo(token, operacaoDto, result);
+        }
+    }
+
+    public void validarExtrato(String token, String inicio, String fim, BindingResult result) {
+        validarToken(token, result);
+        validarData(inicio, "inicio", result);
+        validarData(fim, "fim", result);
+    }
+
+    private void validarData(String toDate, String param, BindingResult result) {
+        try {
+            DateUtil.toDate(toDate);
+        } catch (DateParseException e) {
+            result.addError(new ObjectError(param, e.getMessage()));
         }
     }
 

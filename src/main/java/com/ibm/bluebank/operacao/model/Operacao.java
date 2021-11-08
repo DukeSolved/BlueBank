@@ -1,7 +1,7 @@
 package com.ibm.bluebank.operacao.model;
 
 import com.ibm.bluebank.conta.model.Conta;
-import com.ibm.bluebank.shared.enums.EnumTipoMovimento;
+import com.ibm.bluebank.shared.enums.EnumTipoOperacao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class Operacao {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TIPO_OPERACAO", nullable = false)
-    private EnumTipoMovimento tipoOperacao;
+    private EnumTipoOperacao tipoOperacao;
 
     @Column(name="VALOR")
     private Double valor;
